@@ -15,5 +15,8 @@ __pycache__/
 # OS
 .DS_Store
 
+# Local tooling config
+.claude/
+
 # Submission-private (not part of the code repository)
 cover_letter.*
