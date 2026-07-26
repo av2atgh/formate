@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+
+# LaTeX build artifacts
+*.aux
+*.log
+*.fls
+*.fdb_latexmk
+*.out
+*.toc
+*.blg
+*.synctex.gz
+
+# OS
+.DS_Store

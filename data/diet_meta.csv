@@ -1,0 +1,7 @@
+food,formate_mg,RR,lo,hi,source,logRR
+Coffee (brewed),30.8,0.91,0.89,0.94,"per cup, Ding 2014",-0.09431067947124129
+Regular cola,8.3,1.13,1.06,1.21,"SSB/serving, Imamura 2015",0.12221763272424911
+Diet cola,42.8,1.08,1.02,1.15,"ASB/serving, Imamura 2015",0.0769610411361284
+Fruit juice,300.0,1.07,1.01,1.14,"per serving, Imamura 2015",0.06765864847381486
+Red meat,700.0,1.1,1.06,1.15,"per 100 g, InterConnect 2024",0.09531017980432493
+Creatine,1000.0,1.0,0.9,1.11,"glycemic-neutral, Delpino 2022",0.0
