@@ -69,9 +69,10 @@ calibration targets of \S\ref{sec:betacal}; \textbf{[LIT]} taken from a specific
 literature measurement; \textbf{[ASM]} assumed / order-of-magnitude estimate not
 individually measured. Tags are given in the parameter tables.
 
-\textbf{Integration.} All ODEs are integrated with the implicit backward
-differentiation solver (\texttt{scipy.integrate.solve\_ivp}, \texttt{method='BDF'})
-with dense output. Tolerances are stated per model.
+\textbf{Integration.} All ODEs are integrated with an implicit
+backward-differentiation (BDF) solver
+(\texttt{scipy.integrate.\allowbreak solve\_ivp}) with dense output. Tolerances
+are stated per model.
 
 \textbf{Steady states.} Unless noted, a steady state is obtained by
 pre-integrating to a physiologically reasonable basin and then polishing the
@@ -150,12 +151,12 @@ of purine ring assembly; the committed step (PPAT) is gated by the AMP/PRPP
 ``glue'' term $\theta$:
 \begin{align}
 \mathrm{thf}&=F_{tot}-cho, &
-v_{fthfs}&=h\,\frac{form}{H+form}\,\frac{\mathrm{thf}}{F_{tot}}, &
-\mathrm{onec}&=\frac{cho}{K_c+cho},\\
-\theta&=f_N\,\frac{1+(amp/K_a)^{n}}{1+(amp/K_a)^{n}+prpp/K_{dP}}, &
-v_{ppat}&=P_{max}\,\frac{prpp}{K_{prpp}+prpp}\,(1-\theta),\\
-v_{gart}&=g_{max}\,\frac{gar}{K_g+gar}\,\mathrm{onec}, &
-v_{atic}&=t_{max}\,\frac{aic}{K_t+aic}\,\mathrm{onec}.
+v_{fthfs}&=h\,\tfrac{form}{H+form}\,\tfrac{\mathrm{thf}}{F_{tot}}, &
+\mathrm{onec}&=\tfrac{cho}{K_c+cho},\\
+\theta&=f_N\,\tfrac{1+(amp/K_a)^{n}}{1+(amp/K_a)^{n}+prpp/K_{dP}}, &
+v_{ppat}&=P_{max}\,\tfrac{prpp}{K_{prpp}+prpp}\,(1-\theta),\\
+v_{gart}&=g_{max}\,\tfrac{gar}{K_g+gar}\,\mathrm{onec}, &
+v_{atic}&=t_{max}\,\tfrac{aic}{K_t+aic}\,\mathrm{onec}.
 \end{align}
 $f_N\in[0,1]$ scales the NUDT5 glue strength ($f_N=0$ disables the AMP/PRPP
 feedback). The glue parameters $K_a,n$ are fitted (\S\ref{sec:betacal}) to the
@@ -299,7 +300,7 @@ $\mu$ & 1/240\,/h & pool-renewal dilution & [ASM]\\
 
 \subsection{Calibration}\label{sec:betacal}
 \texttt{recalibrate\_all()} fits the added layers in dependency order (energy
-$\to$ IMP branch $\to$ mTOR/content $\to$ GSIS), each by \texttt{least\_squares} on
+$\to$ IMP branch $\to$ mTOR/\allowbreak content $\to$ GSIS), each by \texttt{least\_squares} on
 log-ratio residuals against independent targets, all evaluated at blood formate
 $0.3$~mM:
 \begin{enumerate}\itemsep1pt
@@ -360,10 +361,10 @@ formate from $F_b$ (closing the formate$\to$insulin$\to$formate loop). A secreti
 defect $s\in[0,1]$ scales insulin appearance:
 \begin{align}
 \dot G_b&=-\big(S_g+X\big)G_b+S_g G_{b0}, &
-\dot I_p&=\beta\,s\,v_{sec}-k_I I_p, &
-\dot X&=-p_2X+p_2S_i(I_p-I_{b,\mathrm{ref}}),\\
-\mathrm{ins\_frac}&=\frac{I_p}{K_I+I_p}, &
-U_{\mathrm{form}}&=\big(U_0+U_{\mathrm{ins}}\,\mathrm{ins\_frac}\big)\frac{F_b}{K_F+F_b}, &
+\dot I_p&=\beta\,s\,v_{sec}-k_I I_p,\\
+\dot X&=-p_2X+p_2S_i(I_p-I_{b,\mathrm{ref}}), &
+\mathrm{ins\_frac}&=\tfrac{I_p}{K_I+I_p},\\
+U_{\mathrm{form}}&=\big(U_0+U_{\mathrm{ins}}\,\mathrm{ins\_frac}\big)\tfrac{F_b}{K_F+F_b}, &
 \dot F_b&=D_{\mathrm{diet}}+P_{\mathrm{endog}}-U_{\mathrm{form}}-k_{\mathrm{ren}}F_b.
 \end{align}
 Blood formate is produced by diet ($D_{\mathrm{diet}}$) and endogenous synthesis
@@ -381,19 +382,24 @@ diabetes can carry higher circulating formate.
 \section{Adipocyte model and three-compartment obesity/diabetes coupling}\label{sec:adip}
 
 \subsection{Adipocyte (ten ODEs)}
-The adipocyte reuses the energy and one-carbon/purine machinery of the
+The adipocyte reuses the energy and one-carbon/\allowbreak purine machinery of the
 $\beta$-cell but replaces insulin peptide synthesis with insulin-driven lipid
-storage, and is XOR-rich (a urate source). State
-$[\,atp,adp,amp,form,cho,imp,gnp,hx,urate,lipid\,]$, $Y_0=[2.0,0.2,0.03,0.3,0.01,$
-$0.05,0.1,0.02,0.05,5.0]$. Insulin-dependent GLUT4 uptake, the formate sink, the
-XOR/urate arm and lipogenesis are:
+storage, and is XOR-rich (a urate source). The state and its initial condition are
+\[
+[\,atp,adp,amp,form,cho,imp,gnp,hx,urate,lipid\,],
+\]
+\[
+Y_0=[\,2.0,0.2,0.03,0.3,0.01,0.05,0.1,0.02,0.05,5.0\,].
+\]
+Insulin-dependent GLUT4 uptake, the formate sink, the XOR/\allowbreak urate arm and
+lipogenesis are:
 \begin{align}
-\mathrm{ins\_glut}&=B_{GLUT}+(1-B_{GLUT})\frac{I}{K_{Iglut}+I}, &
-\mathrm{uptake}&=\mathrm{ins\_glut}\,\frac{G}{K_{glut}+G},\\
-v_{fthfs}&=h_A\frac{form}{H+form}\frac{\mathrm{thf}}{F_{tot}}, &
-v_{denovo}&=V_{purA}\frac{prpp_a}{K_{prpp,a}+prpp_a}\,\mathrm{onec}\,(0.3+0.7\,\mathrm{uptake}),\\
-v_{xo}&=\mathrm{xor\_mult}\;k_{xo,a}\frac{hx}{K_{hx}+hx}, &
-v_{lipo}&=k_{lipo}\frac{I}{K_{Ilipo}+I}\,\mathrm{uptake},
+\mathrm{ins\_glut}&=B_{GLUT}+(1-B_{GLUT})\tfrac{I}{K_{Iglut}+I}, &
+\mathrm{uptake}&=\mathrm{ins\_glut}\,\tfrac{G}{K_{glut}+G},\\
+v_{fthfs}&=h_A\tfrac{form}{H+form}\tfrac{\mathrm{thf}}{F_{tot}}, &
+v_{xo}&=\mathrm{xor\_mult}\;k_{xo,a}\tfrac{hx}{K_{hx}+hx},\\
+v_{lipo}&=k_{lipo}\tfrac{I}{K_{Ilipo}+I}\,\mathrm{uptake},\\
+v_{denovo}&=V_{purA}\tfrac{prpp_a}{K_{prpp,a}+prpp_a}\,\mathrm{onec}\,(0.3+0.7\,\mathrm{uptake}),
 \end{align}
 with hypoxanthine also exported/salvaged ($v_{hx}^{\mathrm{exp}}=k_{hxexp}\,hx$,
 competing with XOR) and urate secreted to blood ($k_{urate,a}\,urate$). Selected
@@ -412,11 +418,11 @@ exchange is scaled by adipose mass $M_{adip}$ and a tissue$\to$blood coupling
 $c_{adip}=0.16$. Blood formate and urate obey
 \begin{align}
 S_g^{\mathrm{eff}}&=S_g\cdot\mathrm{sg\_mult}, &
-\dot G_b&=-(S_g^{\mathrm{eff}}+X)G_b+S_g^{\mathrm{eff}}G_{b0}, &
-\dot I_p&=\beta\,s\,v_{sec}-k_I I_p,\\
-U_{\mathrm{syst}}&=\Big(U_0+U_{\mathrm{ins}}\tfrac{I_p}{K_I+I_p}\Big)\tfrac{F_b}{K_F+F_b}, &
-\dot F_b&=D_{\mathrm{diet}}+P_{\mathrm{endog}}-U_{\mathrm{syst}}-c_{adip}M_{adip}\,J_F-k_{\mathrm{ren}}F_b,\span\\
-\dot U_b&=c_{adip}M_{adip}\,J_U+U_0^{\mathrm{ur}}-k_{\mathrm{ren}}^{u}U_b,\span\span
+\dot G_b&=-(S_g^{\mathrm{eff}}+X)G_b+S_g^{\mathrm{eff}}G_{b0},\\
+\dot I_p&=\beta\,s\,v_{sec}-k_I I_p, &
+U_{\mathrm{syst}}&=\Big(U_0+U_{\mathrm{ins}}\tfrac{I_p}{K_I+I_p}\Big)\tfrac{F_b}{K_F+F_b},\\
+\dot F_b&=D_{\mathrm{diet}}+P_{\mathrm{endog}}-U_{\mathrm{syst}}-c_{adip}M_{adip}\,J_F-k_{\mathrm{ren}}F_b,\\
+\dot U_b&=c_{adip}M_{adip}\,J_U+U_0^{\mathrm{ur}}-k_{\mathrm{ren}}^{u}U_b.
 \end{align}
 where $J_F=k_F(F_b-\mathrm{form}_{ad})$ is the per-cell adipose formate uptake and
 $J_U$ the per-cell adipose urate secretion; $U_0^{\mathrm{ur}}=0.06$~mM/h
@@ -444,6 +450,7 @@ lowers glucose while also lowering formate and insulin.
 \begin{table}[h]\centering\small
 \caption{Committed 2$\times$2 clinical fixed points (\texttt{data/obesity\_diabetes.csv}),
 normal diet.}\label{tab:obes}
+\small\setlength{\tabcolsep}{4pt}%
 \begin{tabular}{@{}lrrrrr@{}}
 \toprule
 scenario & glucose (mM) & insulin (a.u.) & formate (mg/L) & urate (mg/dL) & formate vs healthy\\
@@ -486,9 +493,9 @@ noted but not tracked. Generated by \texttt{make\_gutcycle.py}.
 The eye is a retinal insulin-producing cell (retinal pigment epithelium, RPE)
 running the same $\beta$-cell machinery, driven by \emph{blood} glucose and
 \emph{blood} formate, with strictly local insulin (the blood-retinal barrier
-excludes plasma insulin) and a low endogenous mitochondrial formate
-$\mathrm{EYE\_FMITO}=0.15\,\mathrm{FMITO}$ [ASM] so that blood one-carbon is
-rate-limiting.
+excludes plasma insulin) and a low endogenous mitochondrial formate, set to
+$15\%$ of the $\beta$-cell value ($\mathrm{EYE\_FMITO}$) [ASM], so that blood
+one-carbon is rate-limiting.
 
 \subsection{Blood-dependent eye and the retinal window}
 The blood-dependent eye is the $\beta$-cell steady state at
@@ -510,9 +517,9 @@ $S^2/(K_{regen}^2+S^2)$, $K_{regen}=3.0$, is used only in descriptive plots.)
 
 \subsection{Local formate feed-forward and its regulation}\label{sec:eyeff}
 The RPE may also make its own formate, co-induced with the insulin it produces
-(the mTORC1$\to$ATF4 program that induces SHMT2/MTHFD2, plus a cone-paracrine,
+(the mTORC1 $\to$ ATF4 program that induces SHMT2/\allowbreak MTHFD2, plus a cone-paracrine,
 MTHFD1L-rich supply). This is encoded as a feed-forward on the cell's own
-mTOR signal, capped by the mTORC1$\to$S6K1$\to$IRS-1 negative feedback documented
+mTOR signal, capped by the mTORC1 $\to$ S6K1 $\to$ IRS-1 negative feedback documented
 in RPE:
 \begin{equation}
 f_{\mathrm{mito}}=\mathrm{EYE\_FMITO}+g\,m\,\phi(m),\qquad
