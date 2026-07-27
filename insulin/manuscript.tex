@@ -488,7 +488,7 @@ The dietary sources of formate differ enormously per serving. Whole foods
 dominate~\cite{spiceoflife}: ${\sim}1000$~mg from 1~g creatine,
 700~mg from 200~g meat, 70--600~mg per litre of fruit juice. Caffeine- and
 aspartame-containing drinks and medications contribute far less; for these we use
-the formate-generation potential tabulated by Pietzke et al.~\cite{pietzke2020} (Table~2) --- the formaldehyde released by demethylation of caffeine and
+the formate-generation potential tabulated by Pietzke et al.~\cite{pietzke2020} --- the formaldehyde released by demethylation of caffeine and
 aspartame, taken to full conversion to formate --- which gives ${\sim}43$~mg per
 diet cola, ${\sim}37$~mg per diet soda, ${\sim}31$~mg per cup of brewed coffee,
 ${\sim}8$~mg per regular cola, and up to ${\sim}47$~mg per caffeine pill
@@ -529,7 +529,7 @@ retinal model (below).
   \includegraphics[width=\linewidth]{fig14_diet_formate.pdf}
   \caption{\textbf{Blood formate delivered by each food/beverage.} Model-predicted
   blood formate for the caffeine/aspartame drinks and medications of
-  \cite{pietzke2020} Table~2 (coloured by category, formate per serving annotated) plus
+  \cite{pietzke2020} (coloured by category, formate per serving annotated) plus
   the whole-food sources; all the beverages and pills deliver near-baseline blood
   formate, spanning ${\sim}3$-fold only once the high-content whole foods (fruit
   juice, meat, creatine) are included. The dashed line marks the blood-formate
@@ -544,8 +544,8 @@ retinal model (below).
   \includegraphics[width=0.68\linewidth]{fig15_diet_forest.pdf}
   \caption{\textbf{Food formate does not predict the diabetes effect.}
   Meta-analytic relative risk of type~2 diabetes per serving for the six items
-  with a per-serving estimate (beverage formate contents from~\cite{pietzke2020}
-  Table~2), ordered by formate content (mg per serving in parentheses); the
+  with a per-serving estimate (beverage formate contents from~\cite{pietzke2020}),
+  ordered by formate content (mg per serving in parentheses); the
   formate ranking is uncorrelated with the effect ($r=-0.03$). Coffee (low
   formate) is protective while creatine and meat (high formate) are neutral and
   harmful.}
@@ -1072,11 +1072,14 @@ each compartment carries an explicit parameter dataclass. Code, calibrated outpu
 \texttt{make\_body.py}, \texttt{make\_diet.py}, \texttt{make\_eye\_figs.py},
 \texttt{make\_mthfd2.py}, \texttt{make\_mtor\_inhibitor.py},
 \texttt{eye\_bifurcation.py}, \texttt{make\_supp\_bif.py}) are in this repository.
+The key calibrated and predicted quantities of this run are collected in
+Table~\ref{tab:key}.
 
 \begin{table}[h]
   \centering
   \small
   \caption{Key numbers (this run).}
+  \label{tab:key}
   \begin{tabular}{@{}lr@{}}
     \toprule
     Quantity & Value \\
